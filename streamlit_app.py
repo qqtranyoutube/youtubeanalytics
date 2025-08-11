@@ -2,11 +2,12 @@ import streamlit as st
 from googleapiclient.discovery import build
 import pandas as pd
 
-# Debug: in ra tất cả secrets hiện có để kiểm tra
-st.write("Current Streamlit secrets:", st.secrets)
+# Debug: In ra danh sách keys trong secrets để kiểm tra
+st.write("Available secrets keys:", list(st.secrets.keys()))
 
 try:
     API_KEY = st.secrets["youtube_api_key"]
+    st.write("API Key loaded successfully.")
 except KeyError:
     st.error("Lỗi: Không tìm thấy key 'youtube_api_key' trong streamlit secrets!")
     st.stop()
