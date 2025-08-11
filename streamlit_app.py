@@ -2,8 +2,14 @@ import streamlit as st
 from googleapiclient.discovery import build
 import pandas as pd
 
-# Nhập API Key của bạn vào đây hoặc dùng streamlit secrets
-API_KEY = st.secrets["youtube_api_key"]
+# Debug: in ra tất cả secrets hiện có để kiểm tra
+st.write("Current Streamlit secrets:", st.secrets)
+
+try:
+    API_KEY = st.secrets["youtube_api_key"]
+except KeyError:
+    st.error("Lỗi: Không tìm thấy key 'youtube_api_key' trong streamlit secrets!")
+    st.stop()
 
 def get_youtube_client():
     return build('youtube', 'v3', developerKey=API_KEY)
@@ -19,7 +25,6 @@ def get_channel_info(youtube, channel_id):
         return None
 
 def get_channel_videos(youtube, channel_id, max_results=10):
-    # Lấy playlist uploads của channel
     res = youtube.channels().list(
         part='contentDetails',
         id=channel_id
