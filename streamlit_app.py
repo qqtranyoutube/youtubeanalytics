@@ -45,7 +45,6 @@ def get_youtube_analytics_service(creds):
     return build('youtubeAnalytics', 'v2', credentials=creds)
 
 def get_channel_id(youtube):
-    # Lấy channel ID của user đã cấp quyền
     response = youtube.channels().list(mine=True, part="id").execute()
     channel_id = response['items'][0]['id']
     return channel_id
@@ -55,7 +54,7 @@ def get_audience_demographics(analytics, channel_id):
         ids='channel=={}'.format(channel_id),
         startDate='2023-01-01',
         endDate='2023-12-31',
-        metrics='viewerPercentage',
+        metrics='views,estimatedMinutesWatched',
         dimensions='ageGroup,gender',
         sort='ageGroup,gender'
     ).execute()
@@ -65,7 +64,7 @@ def get_device_type_report(analytics, channel_id):
         ids='channel=={}'.format(channel_id),
         startDate='2023-01-01',
         endDate='2023-12-31',
-        metrics='viewerPercentage',
+        metrics='views',
         dimensions='deviceType',
         sort='deviceType'
     ).execute()
